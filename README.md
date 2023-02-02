@@ -34,4 +34,36 @@ In this part, we'll test our edge broker and make sure we can connect to it with
 
 ## Part 2
 In this part you'll run pair of simple python scripts that listen and publish to a topic on the edge broker.
-1. Review the files 'sub.py' and 'pub.py' in the directory part2.  `sub.py` is the subscription/listener script while `pub.py` is responsible for publishing a mesage. 
+1. Review the files 'sub.py' and 'pub.py' in the directory part2.  `sub.py` is the subscription/listener script while `pub.py` is responsible for publishing a message.
+2. Make sure your edge broker is running.
+3. Start `sub.py` and then run `pub.py`.  In `sub.py`'s console, you should see the message `Hello MQTT...`.
+4. Stop `sub.py`.
+
+## Part 3a.
+In this part, you'll simulate a remote broker.  You'll reuse your mqtt image and start a container listening on a new port.
+```
+docker run -d --name cloud_broker -p 2883:1883 mqtt
+```
+This binds the container port 1883 to 2883 on the host.
+You can test that the cloud broker is running correctly by using the `mosquitto_sub` and `mosquitto_pub` commands.
+You'll add the `-p` option to specific the port to connect to.
+```
+    mosquitto_sub -t test_topic -p 2883
+```
+```
+    mosquitto_pub -t test_topic -p 2883 -m 'Hello Cloud!'
+```
+
+## Part 3b
+In this part, we'll run four python scripts and use both the edge and cloud brokers.
+```
+                                      local_logger.py
+                                     /  
+                                    /
+  local_pub.py ------> edge_broker
+                                   \
+                                    \
+                                     local_repeater.py -----> cloud_broker ------> cloud_listener.py
+
+
+```
