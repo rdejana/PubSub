@@ -25,12 +25,13 @@ You can also get the container logs with the command `docker logs edge_container
 
 ## Part 1
 In this part, we'll test our edge broker and make sure we can connect to it with a simple set of scripts.
-- Make sure your edge broker container is running (see "Starting and running the edge broker")
-- Open two terminals.
-- In the first terminal, run the command `mosquitto_sub -t 'test_topic`. This connects to the edge broker and listens to the topic `test_topic`.
-- In the second terminal, run the command `mosquitto_pub -t 'test_topic' -m 'Hello World!'`. This connects to the edge broker and sends the message `Hello World!` to the topic `test_topic`.
-- In the first terminal, you should now see the message `Hello World!`.
-- Stop the `mosquitto_sub` in the first terminal with the command `ctrl-c`.
+1. Make sure your edge broker container is running (see "Starting and running the edge broker")
+2. Open two terminals. 
+3. In the first terminal, run the command `mosquitto_sub -t 'test_topic'`. This connects to the edge broker and listens to the topic `test_topic`. 
+4. In the second terminal, run the command `mosquitto_pub -t 'test_topic' -m 'Hello World!'`. This connects to the edge broker and sends the message `Hello World!` to the topic `test_topic`. 
+5. In the first terminal, you should now see the message `Hello World!`. 
+6. Stop the `mosquitto_sub` in the first terminal with the command `ctrl-c`.
 
 ## Part 2
 In this part you'll run pair of simple python scripts that listen and publish to a topic on the edge broker.
+1. Review the files 'sub.py' and 'pub.py' in the directory part2.  `sub.py` is the subscription/listener script while `pub.py` is responsible for publishing a mesage. 
