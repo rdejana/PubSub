@@ -1,7 +1,16 @@
 # PubSub
 
+This example simulates an edge to cloud MQTT example.
+
 ## Install MQTT Client libraries
 `pip3 install paho-mqtt`
+
+## Install Mosquitto client
+This depends on your OS.
+
+For Ubuntu: `sudo apt install -y mosquitto-clients`
+
+For macOS `brew install mosquitto`
 
 ## Build MQTT image
 Change to the broker directory and run the following command to build mqtt image:
@@ -56,14 +65,36 @@ You'll add the `-p` option to specific the port to connect to.
 
 ## Part 3b
 In this part, we'll run four python scripts and use both the edge and cloud brokers.
+You'll want to review the following files in the directory `part3`. 
+
+`local_pub.py` - publishes a message to the `edge_broker` on the topic `local_topic`
+
+`local_logger.py` -  listens to the `edge_broker` on the topic `local_topic` and logs out any message it receives.
+
+`local_repeater.py` - listens to the `edge_broker` on the topic `local_topic` and forwards the message to the `cloud_broker` using the topic `cloud_topic`.
+
+`cloud_listener.py` - listens to the 'cloud_broker' on the topic `cloud_topi` and prints the messages.
+
 ```
-                                      local_logger.py
-                                     /  
-                                    /
-  local_pub.py ------> edge_broker
-                                   \
-                                    \
-                                     local_repeater.py -----> cloud_broker ------> cloud_listener.py
+                                    local_logger.py
+                                   /  
+                                  /
+  local_pub.py ----> edge_broker
+                                 \
+                                  \
+                                   local_repeater.py ---> cloud_broker ----> cloud_listener.py
 
 
 ```
+
+1. Make sure both the edge and cloud brokers are running
+2. Start `cloud_listener.py`
+3. Start `local_repeater.py`
+4. Start `local_logger.py`
+5. Run `local_pub.py`
+
+You should see the following:
+- In `local_logger.py`'s console: `local logger ->  A message for the edge broker`
+- In `local_repeater.py`'s console: `repeater:  message received ->  A message for the edge broker`
+- In `cloud_listner.py`'s console: `cloud listener ->  A message for the edge broker`
+
